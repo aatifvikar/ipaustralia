@@ -1,0 +1,250 @@
+#%RAML 1.0
+title: Harvest API
+description: 'Harvest API.'
+version: v1
+
+types:
+  Event:
+    properties:
+      identifier:
+        type: string
+      eventType:
+        type: string
+      eventPayload:
+        type: string
+      eventCategory:
+        enum:
+          - HARVEST
+          - PRODUCT
+          - BATCH
+      relatedIdentifier?:
+        type: string
+  Harvest:
+    properties:
+      identifier:
+        type: string
+      totalHarvestWeight:
+        type: number
+      enterpriseName:
+        type: string
+      harvestDate:
+        type: string
+      anstoReport?:
+        type: string
+      harvestDescription:
+        type: string
+      events:
+        type: Event[]
+  Batch:
+    properties:
+      harvests:
+        type: Harvest[]
+      aggregateType?:
+        type: string
+      businessName:
+        type: string
+      businessAddress?:
+        type: string
+      identifier:
+        type: string
+      events:
+        type: Event[]
+  Product:
+    properties:
+      batches:
+        type: Batch[]
+      identifier:
+        type: string
+      businessName:
+        type: string
+      productLink:
+        type: string
+      productType:
+        type: string
+      productName:
+        type: string
+      productDescription:
+        type: string
+      unitsProduced:
+        type: number
+      businessAddress?:
+        type: string
+      events:
+        type: Event[]
+
+
+/farmers/harvests:
+  post:
+    displayName: Create Harvest
+    description: Creates a Harvest event
+    body:
+      application/json:
+        properties:
+          totalHarvestWeight?:
+            type: number
+          enterpriseName:
+            type: string
+          harvestDate?:
+            type: string
+          anstoReport?:
+            type: boolean
+          harvestDescription?:
+            type: string
+    responses:
+      201:
+        description: OK
+        body:
+          application/json:
+            properties:
+              identifier: 
+                type: string
+  /{harvestIdentifier}:
+    get:
+      displayName: Get Harvest
+      description: Get the details of a Harvest
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              type: Harvest
+    patch:
+      displayName: Update Harvest
+      description: Update a Harvest
+      body:
+        application/json:
+          properties:
+            additionalHarvestWeight?:
+              description: Additional weight to be added to the harvest 
+              type: number
+            additionalHarvestWeightDescription?:
+              description: Description of the additional harvest weight being added
+              type: string
+            additionalHarvestDate: 
+              description: Additional Harvest date
+              type: date-only
+            harvestDescription?:
+              description: Description of the harvest
+              type: string
+            anstoReport?:
+              description: Has the ANSTO Report been received by the auditor
+              type: boolean
+              
+/aggregators/batches:
+  description: Aggregators create batches
+  post:
+    displayName: Create Batch
+    description: Creates a Batch event
+    body:
+      application/json:
+        properties:
+          harvestIdentifiers:
+            type: string[]
+          aggregateType?:
+            type: string
+          businessName:
+            type: string
+          businessAddress?:
+            type: string
+    responses:
+      201:
+        description: OK
+        body:
+          application/json:
+            properties:
+              identifier: 
+                type: string
+  /{batchIdentifier}:
+    get:
+      displayName: Get a Batch
+      description: Get a Batch
+      responses:
+        200:
+          body:
+            application/json:
+              type: Batch
+
+    patch:
+      displayName: Update Batch
+      description: Update a Batch
+      body:
+        application/json:
+          properties:
+            batchDescription?:
+              description: Updates the main batch description
+              type: string
+            aggregateType?:
+              description: Aggregate type
+              type: string
+            harvests?: 
+              type: array
+              items:
+                properties:
+                  identifier:
+                    description: Identifier of the Harvest the update relates to, can also be used to add a harvest to the batch
+                  receivedWeight?:
+                    description: Additional weight received from the harvest 
+                    type: number
+                  receivedDate?:
+                    description: Description of the harvest
+                    type: date-only
+
+/manufacturers/products:
+  description: Manufacturers create products
+  post:
+    displayName: Create Product
+    description: Creates a Product event
+    body:
+      application/json:
+        properties:
+          batchIdentifiers:
+            type: string[]
+          businessName:
+            type: string
+          businessAddress?:
+            type: string
+          productName?:
+            type: string
+          productLink?:
+            type: string
+    responses:
+      201:
+        description: OK
+        body:
+          application/json:
+            properties:
+              identifier: 
+                type: string
+  /{productIdentifier}:
+    get:
+      displayName: Get a Product
+      description: Get a Product
+      responses:
+        200:
+          body:
+            application/json:
+              type: Product
+    patch:
+      displayName: Update Product
+      description: Update a Product
+      body:
+        application/json:
+          properties:
+            productDescription?:
+              description: Updates the main product description
+              type: string
+            productType?:
+              description: Aggregate type
+              type: string
+            batches?: 
+              type: array
+              items:
+                properties:
+                  identifier:
+                    description: Harvest ID the update relates to, can also be used to add a harvest to the batch
+                  weightUsed?:
+                    description: Additional weight received from the harvest 
+                    type: number
+                  additionalUnitsProduced?:
+                    description: Adds to the total units produced for the product
+                    type: number
