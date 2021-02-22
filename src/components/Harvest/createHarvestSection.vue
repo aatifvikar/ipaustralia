@@ -37,6 +37,10 @@ export default {
 	},
 	methods: {
 		onSubmit() {
+			this.$parent.selectedHarvest = {
+				enterpriseName: this.$parent.selectedFarm.value,
+				events: [],
+			};
 			this.$parent.showUpdateForm = true;
 			this.$parent.showCreateSection = false;
 			this.$parent.showUpdateSection = false;

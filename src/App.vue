@@ -95,6 +95,7 @@ h6,
 	width: 100%;
 	margin-bottom: 1rem;
 	text-transform: uppercase;
+	display: inline-block;
 
 	@media (max-width: 768px) {
 		padding: 0;

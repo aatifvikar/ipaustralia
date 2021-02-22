@@ -100,8 +100,10 @@
 				<div class="item">
 					<h2>About the Harvest used</h2>
 					<dl class="data-list">
-						<div v-for="item in selectedBatchNumbers" :key="item.identifier">
-							<dt class="h4">{{ item.businessName }}</dt>
+						<div v-for="item in harvests.keys()" :key="item.identifier">
+							<dt class="h4">
+								{{ item }}
+							</dt>
 							<dd>
 								<table class="data-table">
 									<thead>
@@ -112,25 +114,24 @@
 									</thead>
 									<tbody class="harvest-table">
 										<tr
-											v-for="harvest in item.harvestIdentifiers"
+											v-for="harvest in harvests.get(item)"
 											:key="harvest.identifier"
 											class="harvest-table-row"
 										>
 											<td class="harvest-item">{{ harvest.identifier }}</td>
-											<td class="harvest-item">10/07/2020</td>
-											{{/*Replace this with actual once api is updated*/}}
+											<td class="harvest-item">{{ harvest.harvestDate }}</td>
 										</tr>
 									</tbody>
 								</table>
 							</dd>
 						</div>
-						<div></div>
-						{{/* TBD Where is this data fetched from */}}
 					</dl>
 					<h2>Aggregation Process</h2>
 					<dl class="data-list">
-						<div>
-							<dt class="h4">Lucas Meyer Cosmetics</dt>
+						<div v-for="item in batches.keys()" :key="item.identifier">
+							<dt class="h4">
+								{{ item }}
+							</dt>
 							<dd>
 								<table class="data-table">
 									<thead>
@@ -140,31 +141,33 @@
 										</tr>
 									</thead>
 									<tbody class="harvest-table">
-										<tr class="harvest-table-row">
-											<td class="harvest-item">10076787</td>
-											<td class="harvest-item">10/07/2020</td>
+										<tr
+											v-for="batch in batches.get(item)"
+											:key="batch.identifier"
+											class="harvest-table-row"
+										>
+											<td class="harvest-item">{{ batch.identifier }}</td>
+											<td class="harvest-item">???</td>
 										</tr>
 									</tbody>
 								</table>
 							</dd>
 						</div>
 					</dl>
-					<h2>Your Details</h2>
-					<p>This information will be displayed to the public</p>
-					<dl class="data-list">
-						<div>
-							<dt class="title">Business Name</dt>
-							<dd>Mercedes Cove Aboriginal Corporation</dd>
-						</div>
-						<div>
-							<dt class="title">Address</dt>
-							<dd>
-								Dampier Peninsula/Ardi Country PO Box 3518
-								<br />
-								Broome WA 6725
-							</dd>
-						</div>
-					</dl>
+					<div v-if="product">
+						<h2>Your Details</h2>
+						<p>This information will be displayed to the public</p>
+						<dl class="data-list">
+							<div>
+								<dt class="title">Business Name</dt>
+								<dd>{{ product.businessName }}</dd>
+							</div>
+							<div>
+								<dt class="title">Address</dt>
+								<dd>{{ product.businessAddress }}</dd>
+							</div>
+						</dl>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -185,6 +188,44 @@ export default {
 	props: {
 		selectedBatchNumbers: Array,
 	},
+	watch: {
+		selectedBatchNumbers: {
+			immediate: true,
+			handler: function () {
+				this.getProductDetails();
+			},
+		},
+	},
+	computed: {
+		harvests: function () {
+			const harvests = new Map();
+			if (this.product) {
+				for (const b of this.product.batches) {
+					for (const h of b.harvests) {
+						const en = h.enterpriseName;
+						harvests.set(
+							en,
+							harvests.has(en) &&
+								!harvests.get(en).find((x) => x.identifier === h.identifier)
+								? [...harvests.get(en), h]
+								: [h]
+						);
+					}
+				}
+			}
+			return harvests;
+		},
+		batches: function () {
+			const batches = new Map();
+			if (this.product) {
+				for (const b of this.product.batches) {
+					const bn = b.businessName;
+					batches.set(bn, batches.has(bn) ? [...batches.get(bn), b] : [b]);
+				}
+			}
+			return batches;
+		},
+	},
 	data() {
 		return {
 			productName: '',
@@ -197,10 +238,12 @@ export default {
 			productDescription: '',
 			showNonAboriginalSection: false,
 			updateObject: [],
+			product: null,
 		};
 	},
 	methods: {
 		createUpdateObject() {
+			this.updateObject = [];
 			this.selectedBatchNumbers.forEach((elem) => {
 				this.updateObject.push({
 					identifier: elem.identifier,
@@ -234,9 +277,10 @@ export default {
 					},
 				}
 			)
-				.then((response) => {
+				.then(() => {
 					this.$parent.showConfirmation = true;
 					this.$parent.showProductDetails = false;
+					this.getProductDetails();
 				})
 				.catch(() => {
 					console.log('error');
@@ -244,6 +288,22 @@ export default {
 		},
 		addNonAbgHarvest() {
 			this.showNonAboriginalSection = true;
+		},
+		getProductDetails() {
+			// retrieve the latest details for display
+			axios(
+				`${process.env.VUE_APP_ENDPOINT}/manufacturers/products/` +
+					`${this.productNumber}`,
+				{
+					method: 'GET',
+					auth: {
+						username: store.username,
+						password: store.password,
+					},
+				}
+			).then((response) => {
+				this.product = response.data;
+			});
 		},
 	},
 

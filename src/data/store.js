@@ -8,7 +8,7 @@ export default {
 	//new harvest creation
 	harvestId: '',
 	//after creation of a new batch
-	batchNumber:'',
+	batchNumber: '',
 	batchData: [],
 	productNumber: '',
 	// to display on the product confirmation screen

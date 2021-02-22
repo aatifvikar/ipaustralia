@@ -73,10 +73,16 @@
 					<ProductDetails :productId="this.productNumber"></ProductDetails>
 				</div>
 				<div v-if="showHarvestDetails">
-					<HarvestDetails :harvestId="this.harvestId"></HarvestDetails>
+					<HarvestDetails
+						:harvestId="this.harvestId"
+						@back-to-search="backToSearch"
+					></HarvestDetails>
 				</div>
 				<div v-if="showBatchDetails">
-					<BatchDetails :batchNumber="this.batchNumber"></BatchDetails>
+					<BatchDetails
+						:batchNumber="this.batchNumber"
+						@back-to-search="backToSearch"
+					></BatchDetails>
 				</div>
 			</div>
 		</main>
@@ -116,6 +122,13 @@ export default {
 		};
 	},
 	methods: {
+		backToSearch() {
+			this.showSearchOptions = true;
+			this.showProductDetails = false;
+			this.showHarvestDetails = false;
+			this.showBatchDetails = false;
+		},
+
 		getProductDetails() {
 			axios(
 				`${process.env.VUE_APP_ENDPOINT}/manufacturers/products/` +

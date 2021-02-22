@@ -26,13 +26,11 @@
 					<div>
 						<div class="flex-row">
 							<div class="flex-column">Business Name</div>
-							<div class="flex-column">{{ batchDetails.enterpriseName }}</div>
+							<div class="flex-column">{{ batchDetails.businessName }}</div>
 						</div>
 						<div class="flex-row">
 							<div class="flex-column">Business Address</div>
-							<div class="flex-column">
-								{{ /*API currently does not return this info*/ }}
-							</div>
+							<div class="flex-column">{{ batchDetails.businessAddress }}</div>
 						</div>
 						<div class="flex-row">
 							<div class="flex-column">Batch Number</div>
@@ -49,7 +47,9 @@
 
 						<div class="flex-row">
 							<div class="flex-column">
-								<button class="primary-button">Back to search</button>
+								<button class="primary-button" @click="$emit('back-to-search')">
+									Back to search
+								</button>
 							</div>
 							<div class="flex-column"></div>
 						</div>
@@ -59,13 +59,13 @@
 					<div v-for="item in batchDetails.harvests" :key="item.identifier">
 						<h3>Harvest {{ item.identifier }}</h3>
 						<div class="flex-row">
-							<div class="flex-column">Business Name</div>
+							<div class="flex-column">Enterprise Name</div>
 							<div class="flex-column">{{ item.enterpriseName }}</div>
 						</div>
 						<div class="flex-row">
-							<div class="flex-column">Business Address</div>
+							<div class="flex-column">Enterprise Address</div>
 							<div class="flex-column">
-								{{ /*API currently does not return this info*/ }}
+								{{ getFarmAddress(item.enterpriseName) }}
 							</div>
 						</div>
 						<div class="flex-row">
@@ -77,19 +77,19 @@
 						<div class="flex-row">
 							<div class="flex-column">Harvest Description</div>
 							<div class="flex-column">
-								{{ batchDetails.harvestDescription }}
+								{{ item.harvestDescription }}
 							</div>
 						</div>
 						<div class="flex-row">
 							<div class="flex-column">Harvest Weight</div>
-							<div class="flex-column">
-								{{ batchDetails.totalHarvestWeight }}
-							</div>
+							<div class="flex-column">{{ item.totalHarvestWeight }}kg</div>
 						</div>
 					</div>
 					<div class="flex-row">
 						<div class="flex-column">
-							<button class="primary-button">Back to search</button>
+							<button class="primary-button" @click="$emit('back-to-search')">
+								Back to search
+							</button>
 						</div>
 						<div class="flex-column"></div>
 					</div>
@@ -101,7 +101,7 @@
 
 <script>
 import store from '@/data/store';
-import axios from 'axios';
+import farmList from '@/data/farmList';
 
 const Tab = () => import('@/components/Global/Tabs/Tab.vue');
 const Tabs = () => import('@/components/Global/Tabs/Tabs.vue');
@@ -124,7 +124,11 @@ export default {
 			batchDetails: store.batchDetails,
 		};
 	},
-	methods: {},
+	methods: {
+		getFarmAddress(farmName) {
+			return farmList.farmList.find((l) => l.value === farmName)?.address;
+		},
+	},
 
 	created() {},
 	mounted() {},

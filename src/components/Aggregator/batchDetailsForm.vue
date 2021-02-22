@@ -61,7 +61,7 @@
 							</div>
 							{{/* Non Aboriginal Section*/}}
 							<div v-for="(item, i) in nonAbgSection" :key="i">
-								<h4>Non aboriginal harvest</h4>
+								<h4>Non NAAKPA harvest</h4>
 								<div class="form-field">
 									<label class="title" for="farmBusinessName">
 										Farm Business Name
@@ -77,7 +77,8 @@
 									<label class="title" for="batchWeight">Batch Weight</label>
 									<p class="hint">E.g 105kg</p>
 									<input
-										type="text"
+										type="number"
+										min="1"
 										id="batchWeight"
 										name="batchWeight"
 										v-model="item.batchWeight"
@@ -93,6 +94,17 @@
 										v-model="item.batchDate"
 										class="datepicker"
 									/>
+								</div>
+								<div>
+									<input
+										type="checkbox"
+										id="indigenousSourced"
+										name="indigenousSourced"
+										v-model="item.indigenousSourced"
+									/>
+									<label class="title" for="indigenousSourced">
+										Indigenous sourced?
+									</label>
 								</div>
 							</div>
 							<div class="button-container">
@@ -184,7 +196,7 @@ export default {
 			showNonAboriginalSection: false,
 			nonAbgSection: [],
 			batchIdentifier: store.batchNumber,
-			batchObj:[],
+			batchObj: [],
 		};
 	},
 	methods: {
@@ -196,7 +208,7 @@ export default {
 					receivedDate: elem.harvestDate,
 				});
 			});
-			console.log(JSON.stringify(this.batchObj))
+			console.log(JSON.stringify(this.batchObj));
 		},
 		onSubmit() {
 			this.createUpdateData();
@@ -219,7 +231,7 @@ export default {
 					},
 				}
 			)
-				.then((response) => {
+				.then(() => {
 					this.$parent.showBatchForm = false;
 				})
 				.catch(() => {
@@ -231,14 +243,14 @@ export default {
 				farmBusinessName: '',
 				batchWeight: '',
 				batchDate: '',
+				indigenousSourced: false,
 			});
 			this.showNonAboriginalSection = true;
 		},
 	},
 
 	created() {},
-	mounted() {
-	},
+	mounted() {},
 };
 </script>
 

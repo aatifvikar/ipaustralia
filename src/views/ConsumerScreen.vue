@@ -3,10 +3,24 @@
 	<div id="consumer-screen">
 		<Header></Header>
 		<main>
-			<div>
+			<div v-if="!productId">
+				<div class="product-query">
+					<div class="form-field">
+						<label class="title" for="productNumber">Product Id</label>
+						<p class="hint"></p>
+						<input
+							type="text"
+							id="productNumber"
+							name="productNumber"
+							v-model="productQuery"
+						/>
+					</div>
+				</div>
+			</div>
+			<div v-else-if="productDetails">
 				<div class="main-section">
 					<div class="item">
-						<h1>Kakadu plum body lotion</h1>
+						<h1>{{ productDetails.productName }}</h1>
 						<div class="image-container">
 							<img
 								:src="require('@/assets/kk-body-lotion.png')"
@@ -19,7 +33,7 @@
 						<dl>
 							<div class="description-item">
 								<dt class="title">100% harvested by</dt>
-								<dd>Nothern Australia Aboriginal Plum Alliance</dd>
+								<dd>Nothern Australia Aboriginal Kakadu Plum Alliance</dd>
 							</div>
 							<div class="description-item">
 								<dt class="title">Tested by Antso</dt>
@@ -84,7 +98,11 @@
 				<div class="info-section">
 					<h2>Bringing this product to you</h2>
 					<h3>Harvested by Aboriginal owned enterprises</h3>
-					<div class="info-item">
+					<div
+						v-for="item in allHarvests"
+						:key="item.identifier"
+						class="info-item"
+					>
 						<div class="item info-item-image">
 							<img
 								class="wide-img"
@@ -95,43 +113,11 @@
 						<dl class="item text-section">
 							<div>
 								<dt class="title">Harvest start date</dt>
-								<dd>11 February 2020</dd>
+								<dd>{{ item.harvestDate }}</dd>
 							</div>
 							<div>
 								<dt class="title">Location</dt>
-								<dd>Broome Western Australia</dd>
-							</div>
-							<div>
-								<dt class="title">Certification compliance</dt>
-								<dd>Tested by ANTSO</dd>
-							</div>
-							<div>
-								<dt class="title">More details about ANTSO testing</dt>
-								<dd>
-									The farm has engaged the Australian Centre for Neutron
-									scattering laboratories to action a preliminary test that
-									enable to determine the origin of plums across the supply
-									chain
-								</dd>
-							</div>
-						</dl>
-					</div>
-					<div class="info-item">
-						<div class="info-item-image item">
-							<img
-								class="wide-img"
-								:src="require('@/assets/kp_hands.png')"
-								alt="Plum Lotion"
-							/>
-						</div>
-						<dl class="text-section item">
-							<div>
-								<dt class="title">Harvest start date</dt>
-								<dd>11 February 2020</dd>
-							</div>
-							<div>
-								<dt class="title">Location</dt>
-								<dd>Broome Western Australia</dd>
+								<dd>{{ item.enterpriseName }}</dd>
 							</div>
 							<div>
 								<dt class="title">Certification compliance</dt>
@@ -212,6 +198,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import store from '@/data/store';
+
 const Header = () => import('@/components/Global/Header.vue');
 
 export default {
@@ -220,9 +209,53 @@ export default {
 		Header,
 	},
 	data() {
-		return {};
+		return {
+			productDetails: null,
+			productQuery: null,
+		};
 	},
-	methods: {},
+	computed: {
+		productId() {
+			return this.productQuery || this.$route.query.product;
+		},
+		allHarvests() {
+			return this.productDetails.batches.map((b) => b.harvests).flat(3);
+		},
+	},
+
+	watch: {
+		productId: {
+			immediate: true,
+			handler: function () {
+				this.getProductDetails();
+			},
+		},
+	},
+
+	methods: {
+		getProductDetails() {
+			axios(
+				`${process.env.VUE_APP_ENDPOINT}/manufacturers/products/` +
+					`${this.productId}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+					},
+					auth: {
+						username: store.username,
+						password: store.password,
+					},
+				}
+			)
+				.then((response) => {
+					this.productDetails = response.data;
+				})
+				.catch(() => {
+					console.log('error');
+				});
+		},
+	},
 
 	created() {},
 	mounted() {},
@@ -258,6 +291,9 @@ export default {
 			margin: 0;
 			max-width: 30rem;
 		}
+	}
+	.product-query {
+		padding: 32px;
 	}
 	.main-section,
 	.banner-section,

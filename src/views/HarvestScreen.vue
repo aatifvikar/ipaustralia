@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div class="update-container" v-if="showUpdateSection">
-					<UpdateSection />
+					<UpdateSection :harvests="harvests" />
 				</div>
 				<div class="create-container" v-if="showCreateSection">
 					<CreateSection />
@@ -32,6 +32,8 @@
 						:farmName="selectedFarm.label"
 						:farmAddress="selectedFarm.address"
 						:farmRegion="selectedFarm.region"
+						:harvest="selectedHarvest"
+						:events="selectedHarvest ? selectedHarvest.events : []"
 					/>
 				</div>
 				<div v-if="showConfirmation">
@@ -89,6 +91,8 @@ export default {
 			showUpdateForm: false,
 			isNewHarvest: false,
 			showConfirmation: false,
+			harvests: [],
+			selectedHarvest: null,
 		};
 	},
 	methods: {
@@ -97,24 +101,32 @@ export default {
 			console.log(JSON.stringify(this.selectedFarm));
 			//trigger API call to retrieve the results, if there are harvest id's
 			//on success show the page
-			axios(`${process.env.VUE_APP_ENDPOINT}/farmers/harvests`, {
-				method: 'GET',
-				headers: {
-					'content-type': 'application/json',
-				},
-				auth: {
-					username: store.username,
-					password: store.password,
-				},
-			})
+			axios(
+				`${process.env.VUE_APP_ENDPOINT}/farmers/harvests?enterpriseName=${this.selectedFarm.value}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+					},
+					auth: {
+						username: store.username,
+						password: store.password,
+					},
+				}
+			)
 				.then((response) => {
 					store.harvestData = response.data;
+					this.harvests.length = 0;
+					for (const d of response.data) {
+						this.harvests.push(d);
+					}
 					if (store.harvestData.length >= 1) {
 						this.showUpdateSection = true;
 					}
 					this.showCreateSection = true;
 				})
 				.catch(() => {
+					this.harvests.length = 0;
 					console.log('error');
 				});
 

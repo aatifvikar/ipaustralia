@@ -33,7 +33,13 @@
 				<h2>Accreditation details</h2>
 				<div class="btn-container">
 					<div v-if="isProductConfirmation">
-						<button class="primary-button">Preview Product Website</button>
+						<a
+							target="_blank"
+							class="primary-button"
+							:href="`/Consumer?product=${productNumber}`"
+						>
+							Preview Product Website
+						</a>
 					</div>
 					<div>
 						<button class="secondary-button" v-on:click="backToScreen">

@@ -25,13 +25,13 @@
 				<tab title="Harvest Details">
 					<div>
 						<div class="flex-row">
-							<div class="flex-column">Business Name</div>
+							<div class="flex-column">Enterprise Name</div>
 							<div class="flex-column">{{ harvestDetails.enterpriseName }}</div>
 						</div>
 						<div class="flex-row">
-							<div class="flex-column">Business Address</div>
+							<div class="flex-column">Enterprise Address</div>
 							<div class="flex-column">
-								{{ /*API currently does not return this info*/ }}
+								{{ getFarmAddress(harvestDetails.enterpriseName) }}
 							</div>
 						</div>
 						<div class="flex-row">
@@ -53,7 +53,9 @@
 
 						<div class="flex-row">
 							<div class="flex-column">
-								<button class="primary-button">Back to search</button>
+								<button class="primary-button" @click="$emit('back-to-search')">
+									Back to search
+								</button>
 							</div>
 							<div class="flex-column"></div>
 						</div>
@@ -66,7 +68,7 @@
 
 <script>
 import store from '@/data/store';
-import axios from 'axios';
+import farmList from '@/data/farmList';
 
 const Tab = () => import('@/components/Global/Tabs/Tab.vue');
 const Tabs = () => import('@/components/Global/Tabs/Tabs.vue');
@@ -87,7 +89,11 @@ export default {
 			harvestDetails: store.harvestDetails,
 		};
 	},
-	methods: {},
+	methods: {
+		getFarmAddress(farmName) {
+			return farmList.farmList.find((l) => l.value === farmName)?.address;
+		},
+	},
 
 	created() {},
 	mounted() {},

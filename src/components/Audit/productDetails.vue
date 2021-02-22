@@ -49,7 +49,7 @@
 							<div class="flex-column">{{ productId }}</div>
 						</div>
 						<div class="flex-row">
-							<div class="flex-column">Mfg Date</div>
+							<div class="flex-column">Manufactured Date</div>
 							<div class="flex-column">TBC</div>
 						</div>
 						<div class="flex-row">
@@ -90,11 +90,29 @@
 					</div>
 				</tab>
 				<tab title="Harvest Details">
-					<div>{{/** API currently does not return this information */}}</div>
-					<h3>
-						This section needs to be built once the API is updated to return the
-						appropriate results
-					</h3>
+					<div v-for="item in allHarvests" :key="item.identifier">
+						<h3>Harvest ID {{ item.identifier }}</h3>
+						<div class="flex-row">
+							<div class="flex-column">Enterprise Name</div>
+							<div class="flex-column">{{ item.enterpriseName }}</div>
+						</div>
+						<div class="flex-row">
+							<div class="flex-column">Enterprise Address</div>
+							<div class="flex-column">
+								{{ getFarmAddress(item.enterpriseName) }}
+							</div>
+						</div>
+						<div class="flex-row">
+							<div class="flex-column">Harvest Date</div>
+							<div class="flex-column">
+								{{ item.harvestDate }}
+							</div>
+						</div>
+						<div class="flex-row">
+							<div class="flex-column">Harvest Description</div>
+							<div class="flex-column">{{ item.harvestDescription }}</div>
+						</div>
+					</div>
 				</tab>
 			</tabs>
 		</div>
@@ -103,7 +121,7 @@
 
 <script>
 import store from '@/data/store';
-import axios from 'axios';
+import farmList from '@/data/farmList';
 
 const Tab = () => import('@/components/Global/Tabs/Tab.vue');
 const Tabs = () => import('@/components/Global/Tabs/Tabs.vue');
@@ -123,7 +141,17 @@ export default {
 			batchDetails: store.productDetails.batches,
 		};
 	},
-	methods: {},
+	computed: {
+		allHarvests() {
+			return this.batchDetails.map((b) => b.harvests).flat(3);
+		},
+	},
+
+	methods: {
+		getFarmAddress(farmName) {
+			return farmList.farmList.find((l) => l.value === farmName)?.address;
+		},
+	},
 
 	created() {},
 	mounted() {},

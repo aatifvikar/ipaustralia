@@ -2,8 +2,8 @@
 <template>
 	<div>
 		<div id="update-harvest-form">
-			<h1>{{ harvestDetails.enterpriseName }}</h1>
-			<p class="h2">{{ harvestDetails.identifier }}</p>
+			<h1>{{ harvest.enterpriseName }}</h1>
+			<p class="h2">{{ harvest.harvestDescription }}</p>
 			<div class="harvest-update-container">
 				<div class="form-section item">
 					<form @submit.prevent="onSubmit">
@@ -13,7 +13,8 @@
 								<label class="title" for="batchWeight">Batch Weight</label>
 								<p class="hint">E.g 100.0kg</p>
 								<input
-									type="text"
+									type="number"
+									min="1"
 									id="batchWeight"
 									name="batchWeight"
 									v-model="batchWeight"
@@ -62,18 +63,18 @@
 					</form>
 				</div>
 				<div class="item">
-					<h2>About this Harvest</h2>
+					<h2 v-if="!isNewHarvest">About this Harvest</h2>
 
-					<dl class="data-list">
+					<dl v-if="!isNewHarvest" class="data-list">
 						<div>
 							<dt class="title">Harvest start date</dt>
-							<dd>{{ harvestDetails.harvestDate }}</dd>
+							<dd>{{ harvest.harvestDate }}</dd>
 						</div>
 						<div>
 							<dt class="title">Yield Total</dt>
-							<dd>{{ harvestDetails.totalHarvestWeight }}</dd>
+							<dd>{{ harvest.totalHarvestWeight }}kg</dd>
 						</div>
-						<div v-if="!isNewHarvest">
+						<div>
 							<dt class="title">Record History</dt>
 							<dd>
 								<table class="data-table">
@@ -86,15 +87,21 @@
 									</thead>
 									<tbody class="harvest-table">
 										<tr
-											v-for="event in harvestHistory"
+											v-for="event in events"
 											:key="event.eventPayload.harvestId"
 											class="harvest-table-row"
 										>
 											<td class="harvest-item">
-												{{ event.eventPayload.harvestDate }}
+												{{
+													event.eventPayload.harvestDate ||
+													event.eventPayload.harvestUpdateDate
+												}}
 											</td>
 											<td class="harvest-item">
-												{{ event.eventPayload.totalHarvestWeight }}kg
+												{{
+													event.eventPayload.totalHarvestWeight ||
+													event.eventPayload.additionalHarvestWeight
+												}}kg
 											</td>
 										</tr>
 									</tbody>
@@ -142,6 +149,8 @@ export default {
 		farmName: String,
 		farmAddress: String,
 		farmRegion: String,
+		harvest: Object,
+		events: Array,
 	},
 	data() {
 		return {
@@ -149,8 +158,6 @@ export default {
 			batchWeight: 0.0,
 			batchDescription: '',
 			isNewHarvest: this.$parent.isNewHarvest,
-			harvestDetails: store.harvestDetails,
-			harvestHistory: store.harvestDetails.events,
 		};
 	},
 	methods: {
@@ -183,10 +190,10 @@ export default {
 						console.log('error');
 					});
 			} else {
-				store.harvestId = this.harvestDetails.identifier;
+				store.harvestId = this.harvest.identifier;
 				axios(
 					`${process.env.VUE_APP_ENDPOINT}/farmers/harvests/` +
-						`${this.harvestDetails.identifier}`,
+						`${this.harvest.identifier}`,
 					{
 						method: 'PATCH',
 						headers: {
@@ -201,11 +208,11 @@ export default {
 							additionalHarvestWeightDescription: this.batchDescription,
 							harvestUpdateDate: this.harvestedDate,
 							anstoReport: false,
-							harvestDescription: this.batchDescription,
+							//harvestDescription: this.batchDescription,
 						},
 					}
 				)
-					.then((response) => {
+					.then(() => {
 						this.$parent.showUpdateForm = false;
 						this.$parent.showCreateSection = false;
 					})

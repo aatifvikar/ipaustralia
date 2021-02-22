@@ -40,14 +40,12 @@
 								v-model="selectedHarvestId"
 								:options="harvestIds"
 								label="identifier"
-    							track-by="name"
+								track-by="name"
 								:multiple="true"
 							></v-select>
 						</div>
 						<div class="button-container">
-							<button class="secondary-button">
-								Create new batch
-							</button>
+							<button class="secondary-button">Create new batch</button>
 						</div>
 					</form>
 				</div>
@@ -105,7 +103,7 @@ export default {
 			showBatchCreationSection: true,
 			harvestIds: [],
 			showBatchForm: false,
-			createBatchHarvestIds:[],
+			createBatchHarvestIds: [],
 		};
 	},
 	methods: {
@@ -115,7 +113,7 @@ export default {
 			//trigger API call to retrieve the results
 		},
 		createBatchObject() {
-			this.selectedHarvestId.forEach(elem => {
+			this.selectedHarvestId.forEach((elem) => {
 				this.createBatchHarvestIds.push(elem.identifier);
 			});
 		},
@@ -139,9 +137,9 @@ export default {
 				},
 			})
 				.then((response) => {
-					console.log(response.data.identifier)
+					console.log(response.data.identifier);
 					store.batchNumber = response.data.identifier;
-					this.showBatchCreationSection =false;
+					this.showBatchCreationSection = false;
 					this.showBatchForm = true;
 				})
 				.catch(() => {

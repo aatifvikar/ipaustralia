@@ -8,18 +8,18 @@
 					<caption class="vh">Harvest records</caption>
 					<thead class="harvest-heading">
 						<tr>
-							<th class="item" scope="col">Harvest ID</th>
+							<th class="item" scope="col">Harvest name</th>
 							<th class="item" scope="col" colspan="2">Created on</th>
 						</tr>
 					</thead>
 					<tbody class="harvest-table">
 						<tr
 							class="harvest-table-row"
-							v-for="item in tableData"
+							v-for="item in harvests"
 							:key="item.message"
 						>
 							<td class="item">
-								{{ item.identifier }}
+								{{ item.harvestDescription }}
 							</td>
 							<td class="item">
 								{{ item.harvestDate }}
@@ -51,11 +51,11 @@ import axios from 'axios';
 export default {
 	name: 'UpdateHarvestSection',
 	components: {},
-	data() {
-		return {
-			tableData: store.harvestData,
-		};
+
+	props: {
+		harvests: Array,
 	},
+
 	methods: {
 		showUpdateForm(harvestObj) {
 			axios(
@@ -75,6 +75,7 @@ export default {
 				.then((response) => {
 					store.harvestDetails = response.data;
 					if (store.harvestDetails) {
+						this.$parent.selectedHarvest = response.data;
 						this.$parent.showUpdateForm = true;
 						this.$parent.showCreateSection = false;
 						this.$parent.showUpdateSection = false;
