@@ -100,7 +100,7 @@ export default {
 			padding: 4rem;
 			width: 60%;
 			margin: 4rem auto;
-			box-shadow: 8px 8px 8px 8px #888888;
+			box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 		}
 		.details-table,
 		.btn-container {

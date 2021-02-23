@@ -101,23 +101,46 @@
 				</div>
 				<div class="info-section">
 					<h2>Bringing this product to you</h2>
-					<h3>Harvested by Aboriginal owned enterprises</h3>
+					<h4 class="sub-heading">
+						<img src="@/assets/harvest_by_aboriginal.svg" class="icon" />
+						Harvested by Aboriginal owned enterprises
+					</h4>
 					<div
-						v-for="item in allHarvests"
+						v-for="(item, key) in allHarvests"
 						:key="item.identifier"
 						class="info-item"
 					>
 						<div class="item info-item-image">
+							<h4>Mercedes Cove Aboriginal Corporation</h4>
 							<img
+								v-if="key === 0"
 								class="wide-img"
-								:src="require('@/assets/kp_hands.png')"
+								:src="require('@/assets/mercedes-cove-beach.jpg')"
+								alt="Plum Lotion"
+							/>
+							<img
+								v-else-if="key === 1"
+								class="wide-img"
+								:src="require('@/assets/kakadu-plum.jpg')"
+								alt="Plum Lotion"
+							/>
+							<img
+								v-else-if="key === 2"
+								class="wide-img"
+								:src="require('@/assets/mayi-harvests.jpg')"
+								alt="Plum Lotion"
+							/>
+							<img
+								v-else
+								class="wide-img"
+								:src="require('@/assets/mercedes-cove-beach.jpg')"
 								alt="Plum Lotion"
 							/>
 						</div>
 						<dl class="item text-section">
 							<div class="element">
 								<dt class="title">
-									<img :src="require('@/assets/date.svg')" class="icon" />
+									<img :src="require('@/assets/calendar.svg')" class="icon" />
 									Harvest start date
 								</dt>
 								<dd>{{ item.harvestDate }}</dd>
@@ -147,12 +170,13 @@
 							</div>
 						</dl>
 					</div>
-					<h3>Manufacture Process</h3>
+					<h3 class="no-margin-bottom">Manufacture Process</h3>
 					<div class="info-item">
 						<dl class="text-section item">
+							<h4 class="noMarginTopBottom">Creating Kakadu plum extract</h4>
 							<div class="element">
 								<dt class="title">
-									<img :src="require('@/assets/date.svg')" class="icon" />
+									<img :src="require('@/assets/calendar.svg')" class="icon" />
 									Date of Manufacture
 								</dt>
 								<dd>11 February 2020</dd>
@@ -182,9 +206,10 @@
 							</div>
 						</dl>
 						<dl class="text-section item">
+							<h4 class="noMarginTopBottom">Manufacturing the final product</h4>
 							<div class="element">
 								<dt class="title">
-									<img :src="require('@/assets/date.svg')" class="icon" />
+									<img :src="require('@/assets/calendar.svg')" class="icon" />
 									Elaborated on
 								</dt>
 								<dd>11 February 2020</dd>
@@ -219,9 +244,15 @@
 					<p class="support-description">
 						To learn more about how to support aboriginal farmers in the ethical
 						production of kakadu plum visit
-						<a href="https.naapka.com.au">Naapka.com.au</a>
+						<a href="https://naakpa.com.au/" target="_blank">Naapka.com.au</a>
 					</p>
-					<a class="secondary-button">Naakpa.com.au</a>
+					<a
+						class="secondary-button"
+						href="https://naakpa.com.au/"
+						target="_blank"
+					>
+						Naakpa.com.au
+					</a>
 				</div>
 			</div>
 			<div v-else>
@@ -369,7 +400,7 @@ export default {
 			.icon {
 				position: absolute;
 				width: 25px;
-				left: -45px;
+				left: -38px;
 				top: 5px;
 			}
 		}
@@ -433,11 +464,28 @@ export default {
 		padding: 3rem;
 		.support-description {
 			margin-bottom: 2rem;
+			padding-left: 18rem;
+			padding-right: 18rem;
+			font-size: 24px;
+			font-weight: 400;
+			@media screen and (max-width: 1024px) {
+				padding-left: 4rem;
+				padding-right: 4rem;
+			}
+			@media screen and (max-width: 768px) {
+				padding-left: 1rem;
+				padding-right: 1rem;
+			}
 		}
 		.secondary-button {
 			background-color: black;
-			color: white;
+			color: rgb(208, 217, 71);
+			text-decoration: none;
 			margin-top: 2rem;
+			padding-left: 4rem;
+			padding-right: 4rem;
+			font-size: 20px;
+			font-weight: 400;
 		}
 	}
 	.description-item {
@@ -452,6 +500,23 @@ export default {
 		font-weight: bold;
 		padding: 4rem;
 		background: white;
+	}
+	.sub-heading {
+		position: relative;
+		padding-left: 40px;
+		color: rgb(208, 217, 71);
+		.icon {
+			position: absolute;
+			width: 30px;
+			left: 0;
+		}
+	}
+	.no-margin-bottom {
+		margin-bottom: 0;
+	}
+	.noMarginTopBottom {
+		margin-top: 16px;
+		margin-bottom: 32px;
 	}
 }
 </style>

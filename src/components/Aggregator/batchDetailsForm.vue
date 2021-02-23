@@ -266,7 +266,7 @@ export default {
 		}
 
 		.form-section {
-			box-shadow: 8px 8px 8px 8px #888888;
+			box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
 			@media (max-width: 768px) {
 				box-shadow: none;
