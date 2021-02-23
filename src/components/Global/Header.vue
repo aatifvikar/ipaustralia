@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<div id="header-row">
-			<a href="https://naakpa.com.au/">
+			<a href="/">
 				<span class="vh">
 					Northern Australia Aboriginal Kakadu Plum Alliance
 				</span>
