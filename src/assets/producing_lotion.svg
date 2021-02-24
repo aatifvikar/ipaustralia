@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="248px" height="248px" viewBox="0 0 248 248" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>producing lotion</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-45.000000, -574.000000)" stroke="rgb(208,217,71)">
+            <g id="producing-lotion" transform="translate(48.000000, 577.000000)">
+                <path d="M121.25,86.28 L121.25,71.6966667 C121.25,70.0858361 119.944164,68.78 118.333333,68.78 L100.833333,68.78 C99.2225028,68.78 97.9166667,70.0858361 97.9166667,71.6966667 L97.9166667,86.28" id="Path" stroke-width="5.83333333" stroke-linecap="round" stroke-linejoin="round"></path>
+                <line x1="109.589167" y1="51.28" x2="109.589167" y2="68.78" id="Path" stroke-width="5.83333333" stroke-linecap="round" stroke-linejoin="round"></line>
+                <path d="M121.25,51.2799999 L95.2158333,51.2799999 C93.2658752,51.2797082 91.4447267,52.25376 90.3625,53.8758333 L86.25,60.03" id="Path" stroke-width="5.83333333" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M144.583333,130.03 L144.583333,167.946667 C144.583333,174.389989 139.359989,179.613333 132.916667,179.613333 L86.25,179.613333 C79.8066779,179.613333 74.5833333,174.389989 74.5833333,167.946667 L74.5833333,97.9466667 C74.5833333,91.5033446 79.8066779,86.28 86.25,86.28 L127.083333,86.28" id="Path" stroke-width="5.83333333" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M185.416667,97.9466667 C185.416667,110.833311 174.969977,121.28 162.083333,121.28 C149.196689,121.28 138.75,110.833311 138.75,97.9466667 C138.75,87.7033333 153.5025,60.5608333 159.545833,49.8683333 C160.062904,48.9516145 161.03376,48.3845755 162.08625,48.3845755 C163.13874,48.3845755 164.109596,48.9516145 164.626667,49.8683333 C170.675833,60.5666667 185.416667,87.7033333 185.416667,97.9466667 Z" id="Path" stroke-width="5.83333333" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle id="Oval" stroke-width="5.83" cx="121" cy="121" r="121"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

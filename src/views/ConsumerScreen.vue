@@ -106,35 +106,79 @@
 						Harvested by Aboriginal owned enterprises
 					</h4>
 					<div
-						v-for="(item, key) in allHarvests"
+						v-for="item in allHarvests"
 						:key="item.identifier"
 						class="info-item"
 					>
 						<div class="item info-item-image">
-							<h4>Mercedes Cove Aboriginal Corporation</h4>
+							<h4>{{ item.enterpriseName }}</h4>
 							<img
-								v-if="key === 0"
+								v-if="
+									item.enterpriseName.toLowerCase() ===
+									'bawinanga aboriginal corporation'
+								"
 								class="wide-img"
-								:src="require('@/assets/mercedes-cove-beach.jpg')"
-								alt="Plum Lotion"
+								:src="require('@/assets/bawinanga.png')"
+								:alt="item.enterpriseName"
 							/>
 							<img
-								v-else-if="key === 1"
+								v-else-if="
+									item.enterpriseName.toLowerCase() ===
+									'lombadina aboriginal corporation'
+								"
 								class="wide-img"
 								:src="require('@/assets/kakadu-plum.jpg')"
-								alt="Plum Lotion"
+								:alt="item.enterpriseName"
 							/>
 							<img
-								v-else-if="key === 2"
+								v-else-if="
+									item.enterpriseName.toLowerCase() ===
+									'gundjeihmi aboriginal corporation'
+								"
+								class="wide-img"
+								:src="require('@/assets/gundjeihmi.jpg')"
+								:alt="item.enterpriseName"
+							/>
+							<img
+								v-else-if="
+									item.enterpriseName.toLowerCase() === 'thamarrurr plums'
+								"
+								class="wide-img"
+								:src="require('@/assets/thamarrurr_plums.jpg')"
+								:alt="item.enterpriseName"
+							/>
+							<img
+								v-else-if="
+									item.enterpriseName.toLowerCase() ===
+									'mercedes cove aboriginal corporation'
+								"
+								class="wide-img"
+								:src="require('@/assets/mercedes-cove-beach.jpg')"
+								:alt="item.enterpriseName"
+							/>
+							<img
+								v-else-if="
+									item.enterpriseName.toLowerCase() ===
+									'mayi harvests (milari aboriginal corporation)'
+								"
 								class="wide-img"
 								:src="require('@/assets/mayi-harvests.jpg')"
-								alt="Plum Lotion"
+								:alt="item.enterpriseName"
+							/>
+							<img
+								v-else-if="
+									item.enterpriseName.toLowerCase() ===
+									'mamabulanjin aboriginal corporation'
+								"
+								class="wide-img"
+								:src="require('@/assets/mamabulanjin.jpg')"
+								:alt="item.enterpriseName"
 							/>
 							<img
 								v-else
 								class="wide-img"
 								:src="require('@/assets/mercedes-cove-beach.jpg')"
-								alt="Plum Lotion"
+								:alt="item.enterpriseName"
 							/>
 						</div>
 						<dl class="item text-section">
@@ -170,7 +214,10 @@
 							</div>
 						</dl>
 					</div>
-					<h3 class="no-margin-bottom">Manufacture Process</h3>
+					<h3 class="no-margin-bottom manifacture">
+						<img src="@/assets/producing_lotion.svg" class="icon" />
+						Manufacture Process
+					</h3>
 					<div class="info-item">
 						<dl class="text-section item">
 							<h4 class="noMarginTopBottom">Creating Kakadu plum extract</h4>
@@ -494,22 +541,22 @@ export default {
 			max-width: 30rem;
 		}
 	}
+	.sub-heading,
+	.manifacture {
+		position: relative;
+		padding-left: 50px;
+		.icon {
+			position: absolute;
+			width: 40px;
+			left: 0;
+		}
+	}
 	.no-records {
 		color: rgb(24, 24, 24);
 		text-align: center;
 		font-weight: bold;
 		padding: 4rem;
 		background: white;
-	}
-	.sub-heading {
-		position: relative;
-		padding-left: 40px;
-		color: rgb(208, 217, 71);
-		.icon {
-			position: absolute;
-			width: 30px;
-			left: 0;
-		}
 	}
 	.no-margin-bottom {
 		margin-bottom: 0;
