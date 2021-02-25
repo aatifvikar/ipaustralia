@@ -87,6 +87,40 @@
 						</dl>
 					</div>
 				</div>
+				<div class="certification-section">
+					<div class="item">
+						<img
+							class="cert-img"
+							:src="require('@/assets/kakadu_1.png')"
+							alt="Plum Lotion"
+						/>
+						<dt class="title">100% Harvest by</dt>
+						<dd class="desc">
+							The Northern Australia Aboriginal Kakadu Plum Alliance
+						</dd>
+					</div>
+					<div class="item">
+						<img
+							class="cert-img"
+							:src="require('@/assets/kakadu_2.png')"
+							alt="Plum Lotion"
+						/>
+						<dt class="title">Tested by ANSTO</dt>
+						<dd class="desc">
+							The test determines the origin of the plums across the supply
+							chain
+						</dd>
+					</div>
+					<div class="item">
+						<img
+							class="cert-img"
+							:src="require('@/assets/kakadu_3.png')"
+							alt="Plum Lotion"
+						/>
+						<dt class="title">Access benefit sharing</dt>
+						<dd class="desc">This is a sample text</dd>
+					</div>
+				</div>
 				<div class="image-section">
 					<img
 						class="wide-img"
@@ -538,7 +572,8 @@ export default {
 	}
 	.main-section,
 	.banner-section,
-	.info-section {
+	.info-section,
+	.certification-section {
 		padding: 4rem 8rem;
 		.logo-img {
 			width: 90%;
@@ -640,6 +675,25 @@ export default {
 	}
 	.scroll {
 		cursor: pointer;
+	}
+	.certification-section {
+		background-color: #000;
+		display: flex;
+		justify-content: space-around;
+		text-align: center;
+		.title {
+			color: rgb(208, 217, 71);
+			margin-top: 0;
+		}
+		.desc {
+			margin: 0;
+		}
+		.cert-img {
+			width: 50%;
+		}
+		@media screen and (max-width: 768px) {
+			flex-direction: column;
+		}
 	}
 }
 </style>
