@@ -113,71 +113,8 @@
 						<div class="item info-item-image">
 							<h4>{{ item.enterpriseName }}</h4>
 							<img
-								v-if="
-									item.enterpriseName.toLowerCase() ===
-									'bawinanga aboriginal corporation'
-								"
 								class="wide-img"
-								:src="require('@/assets/bawinanga.png')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() ===
-									'lombadina aboriginal corporation'
-								"
-								class="wide-img"
-								:src="require('@/assets/kakadu-plum.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() ===
-									'gundjeihmi aboriginal corporation'
-								"
-								class="wide-img"
-								:src="require('@/assets/gundjeihmi.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() === 'thamarrurr plums'
-								"
-								class="wide-img"
-								:src="require('@/assets/thamarrurr_plums.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() ===
-									'mercedes cove aboriginal corporation'
-								"
-								class="wide-img"
-								:src="require('@/assets/mercedes-cove-beach.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() ===
-									'mayi harvests (milari aboriginal corporation)'
-								"
-								class="wide-img"
-								:src="require('@/assets/mayi-harvests.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else-if="
-									item.enterpriseName.toLowerCase() ===
-									'mamabulanjin aboriginal corporation'
-								"
-								class="wide-img"
-								:src="require('@/assets/mamabulanjin.jpg')"
-								:alt="item.enterpriseName"
-							/>
-							<img
-								v-else
-								class="wide-img"
-								:src="require('@/assets/mercedes-cove-beach.jpg')"
+								:src="require(`@/assets/${getImage(item.enterpriseName)}`)"
 								:alt="item.enterpriseName"
 							/>
 						</div>
@@ -194,7 +131,7 @@
 									<img :src="require('@/assets/location.svg')" class="icon" />
 									Location
 								</dt>
-								<dd>{{ item.enterpriseName }}</dd>
+								<dd>{{ getLocation(item.enterpriseName) }}</dd>
 							</div>
 							<div class="element">
 								<dt class="title">
@@ -381,6 +318,46 @@ export default {
 					console.log('error');
 					this.message = 'No records found try again';
 				});
+		},
+		getImage(img) {
+			switch (img.toLowerCase()) {
+				case 'bawinanga aboriginal corporation':
+					return 'bawinanga.png';
+				case 'gundjeihmi aboriginal corporation':
+					return 'gundjeihmi.jpg';
+				case 'thamarrurr plums':
+					return 'thamarrurr_plums.jpg';
+				case 'lombadina aboriginal corporation':
+					return 'kakadu-plum.jpg';
+				case 'mercedes cove aboriginal corporation':
+					return 'mercedes-cove-beach.jpg';
+				case 'mayi harvests (milari aboriginal corporation)':
+					return 'mayi-harvests.jpg';
+				case 'mamabulanjin aboriginal corporation':
+					return 'mamabulanjin.jpg';
+				default:
+					return 'mayi-harvests.jpg';
+			}
+		},
+		getLocation(loc) {
+			switch (loc.toLowerCase()) {
+				case 'bawinanga aboriginal corporation':
+					return 'Maningrida';
+				case 'gundjeihmi aboriginal corporation':
+					return 'Jabiru';
+				case 'thamarrurr plums':
+					return 'Wadeye';
+				case 'lombadina aboriginal corporation':
+					return 'Dampier Peninsula';
+				case 'mercedes cove aboriginal corporation':
+					return 'Dampier Peninsula';
+				case 'mayi harvests (milari aboriginal corporation)':
+					return 'Broome';
+				case 'mamabulanjin aboriginal corporation':
+					return 'Broome';
+				default:
+					return loc;
+			}
 		},
 	},
 
