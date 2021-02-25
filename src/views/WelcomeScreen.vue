@@ -60,22 +60,23 @@ export default {
 	padding: 2rem;
 	.nav-routes {
 		display: flex;
-		justify-content: space-around;
-
+		flex-wrap: wrap;
 		.nav-item {
-			margin: 0.5rem;
+			flex: 0 31%;
+			margin: 10px;
 			width: 33%;
 			@media (max-width: 768px) {
+				flex: 0 100%;
+				margin: 0;
 				width: 100%;
 			}
 		}
-		@media (max-width: 768px) {
-			flex-direction: column;
-			align-items: center;
-		}
 	}
 	.primary-button {
-		padding: 1rem;
+		padding: 5rem;
+		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+		border: none;
+		border-top: 5px solid #637e3e;
 	}
 }
 </style>
