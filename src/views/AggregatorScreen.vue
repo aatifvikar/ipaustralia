@@ -133,7 +133,6 @@ export default {
 					aggregateType: 'NEW_AGG_TYPE',
 					businessName: this.businessName,
 					businessAddress: this.businessAddress,
-					batchDetailsSection: 'Dummy Description',
 				},
 			})
 				.then((response) => {
