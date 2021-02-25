@@ -17,6 +17,7 @@ $primary-green: #637e3e;
 html {
 	font-size: 100%;
 	font-weight: 300;
+	scroll-behavior: smooth;
 }
 
 body {

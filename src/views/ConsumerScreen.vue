@@ -5,6 +5,7 @@
 		<main>
 			<div v-if="!productId">
 				<div class="form-container">
+					<a href="#product"></a>
 					<div class="form-field">
 						<label class="label" for="productNumber">Product Id</label>
 						<p class="hint"></p>
@@ -20,42 +21,67 @@
 			<div v-else-if="productDetails">
 				<div class="main-section">
 					<div class="item">
-						<h1 v-if="productDetails.productName">
-							{{ productDetails.productName }}
-						</h1>
 						<div class="image-container">
 							<img
-								:src="require('@/assets/kk-body-lotion.png')"
-								alt="Plum Lotion"
-								class="wide-img"
+								:src="
+									productDetails.productImageLink
+										? productDetails.productImageLink
+										: 'https://austsuperfoods.com.au/wp-content/uploads/2020/08/kakadu-plum-30g.png'
+								"
+								alt="Product"
+								class="wide-img wide-img-product"
 							/>
 						</div>
 					</div>
 					<div class="item description-container">
 						<dl>
 							<div class="description-item">
-								<dt class="title">100% harvested by</dt>
-								<dd>Nothern Australia Aboriginal Kakadu Plum Alliance</dd>
-							</div>
-							<div class="description-item">
-								<dt class="title">Tested by Antso</dt>
+								<dt class="title">Product Name</dt>
 								<dd>
-									The test determines the origin of plums across the supply
-									chain
+									{{
+										productDetails.productName
+											? productDetails.productName
+											: '-'
+									}}
 								</dd>
 							</div>
 							<div class="description-item">
-								<dt class="title">Access benefit sharing</dt>
-								<dd>This is a sample text</dd>
+								<dt class="title">Product Description</dt>
+								<dd>
+									{{
+										productDetails.productDescription
+											? productDetails.productDescription
+											: '-'
+									}}
+								</dd>
+							</div>
+							<div class="description-item">
+								<dt class="title">Product Type</dt>
+								<dd>
+									{{
+										productDetails.productType
+											? productDetails.productType
+											: '-'
+									}}
+								</dd>
 							</div>
 							<div class="description-item">
 								<dt class="title">Verified by</dt>
 								<dd>
-									<img
-										:src="require('@/assets/ip-aus-logo.png')"
-										alt="Plum Lotion"
-										class="logo-img"
-									/>
+									<a
+										:href="
+											productDetails.productLink
+												? productDetails.productLink
+												: '#'
+										"
+										target="_blank"
+									>
+										<img
+											:src="require('@/assets/ip-aus-logo.png')"
+											alt="Plum Lotion"
+											class="logo-img"
+										/>
+									</a>
 								</dd>
 							</div>
 						</dl>
@@ -106,8 +132,8 @@
 						Harvested by Aboriginal owned enterprises
 					</h4>
 					<div
-						v-for="item in allHarvests"
-						:key="item.identifier"
+						v-for="(item, key) in allHarvests"
+						:key="`${key}_${item.identifier}`"
 						class="info-item"
 					>
 						<div class="item info-item-image">
@@ -138,7 +164,16 @@
 									<img :src="require('@/assets/checked.svg')" class="icon" />
 									Certification compliance
 								</dt>
-								<dd>Tested by ANTSO</dd>
+								<dd>
+									<a
+										v-if="item.anstoIndicator"
+										:href="item.anstoReportLink"
+										target="_blank"
+									>
+										Tested by ANTSO
+									</a>
+									<span v-else>Tested by ANTSO</span>
+								</dd>
 							</div>
 							<div class="element">
 								<dt class="title">More details about ANTSO testing</dt>
@@ -161,23 +196,28 @@
 							<div class="element">
 								<dt class="title">
 									<img :src="require('@/assets/calendar.svg')" class="icon" />
-									Date of Manufacture
+									Date of Aggreation
 								</dt>
-								<dd>11 February 2020</dd>
+								<dd>{{ getDateOfAggresstion }}</dd>
 							</div>
 							<div class="element">
 								<dt class="title">
 									<img :src="require('@/assets/user.svg')" class="icon" />
 									Manufacture by
 								</dt>
-								<dd>Broome Western Australia</dd>
+								<dd>{{ getBusinessName('CREATE_KAKADU') }}</dd>
 							</div>
 							<div class="element">
 								<dt class="title">
 									<img :src="require('@/assets/checked.svg')" class="icon" />
 									Certification compliance
 								</dt>
-								<dd>Validated by ANTSO</dd>
+								<dd>
+									<span v-if="productDetails.anstoReport">
+										{{ productDetails.anstoReport }}
+									</span>
+									<span v-else>Validated by ANTSO</span>
+								</dd>
 							</div>
 							<div class="element">
 								<dt class="title">More details about ANTSO testing</dt>
@@ -196,21 +236,25 @@
 									<img :src="require('@/assets/calendar.svg')" class="icon" />
 									Elaborated on
 								</dt>
-								<dd>11 February 2020</dd>
+								<dd>{{ getProductUpdateDate }}</dd>
 							</div>
 							<div class="element">
 								<dt class="title">
 									<img :src="require('@/assets/user.svg')" class="icon" />
 									Manufacture by
 								</dt>
-								<dd>Broome Western Australia</dd>
+								<dd>{{ getBusinessName('FINAL_PRODUCT') }}</dd>
 							</div>
 							<div class="element">
 								<dt class="title">
-									<img :src="require('@/assets/checked.svg')" class="icon" />
-									Certification compliance
+									<img :src="require('@/assets/product.svg')" class="icon" />
+									Product Details
 								</dt>
-								<dd>Validated by ANTSO</dd>
+								<dd>
+									<a v-on:click="scrollToTop" class="scroll">
+										Click to view details
+									</a>
+								</dd>
 							</div>
 							<div class="element">
 								<dt class="title">More details about ANTSO testing</dt>
@@ -280,8 +324,35 @@ export default {
 		productId() {
 			return this.productQuery || this.$route.query.product;
 		},
+		//Returns all the harvests in the batches array
 		allHarvests() {
-			return this.productDetails.batches.map((b) => b.harvests).flat(3);
+			return this.productDetails.batches.map((b) => b.harvests).flat();
+		},
+
+		getDateOfAggresstion() {
+			const events = this.productDetails.batches
+				.map((event) => event.events)
+				.flat();
+			let batchUpdateEvent = [];
+			if (events.length > 0) {
+				batchUpdateEvent = events.filter((type) => {
+					if (type.eventType === 'BATCH_UPDATE_EVENT') {
+						return type;
+					}
+				});
+				return batchUpdateEvent[0].eventPayload.batchUpdateDate;
+			}
+			return null;
+		},
+		getProductUpdateDate() {
+			const events = this.productDetails.events.filter(
+				(ev) => ev.eventType === 'PRODUCT_UPDATE_EVENT'
+			);
+			if (events.length > 0) {
+				return events[0].eventPayload.productUpdateDate;
+			}
+
+			return '-';
 		},
 	},
 
@@ -320,6 +391,7 @@ export default {
 				});
 		},
 		getImage(img) {
+			if (!img) return;
 			switch (img.toLowerCase()) {
 				case 'bawinanga aboriginal corporation':
 					return 'bawinanga.png';
@@ -340,6 +412,7 @@ export default {
 			}
 		},
 		getLocation(loc) {
+			if (!loc) return;
 			switch (loc.toLowerCase()) {
 				case 'bawinanga aboriginal corporation':
 					return 'Maningrida';
@@ -358,6 +431,23 @@ export default {
 				default:
 					return loc;
 			}
+		},
+
+		getBusinessName(type) {
+			const bn = this.productDetails.batches
+				.map((bn) => bn.businessName)
+				.flat();
+			if (bn.length > 0 && type === 'CREATE_KAKADU') {
+				return bn[0];
+			}
+			if (bn.length > 1 && type === 'FINAL_PRODUCT') {
+				return bn[1];
+			}
+			return '-';
+		},
+
+		scrollToTop() {
+			window.scrollTo(0, 0);
 		},
 	},
 
@@ -439,6 +529,12 @@ export default {
 		height: 20rem;
 		width: 100%;
 		object-fit: cover;
+	}
+	.wide-img-product {
+		height: 28rem;
+		@media (max-width: 768px) {
+			height: 22rem;
+		}
 	}
 	.main-section,
 	.banner-section,
@@ -541,6 +637,9 @@ export default {
 	.noMarginTopBottom {
 		margin-top: 16px;
 		margin-bottom: 32px;
+	}
+	.scroll {
+		cursor: pointer;
 	}
 }
 </style>
