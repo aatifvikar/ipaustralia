@@ -29,14 +29,14 @@
 								/>
 							</div>
 							<div class="form-field">
-								<label class="title" for="anstoDocument">
+								<label class="title" for="anstoReportLink">
 									ANSTO Testing Document URL
 								</label>
 								<input
 									type="text"
-									id="anstoDocument"
-									name="anstoDocument"
-									v-model="anstoDocument"
+									id="anstoReportLink"
+									name="anstoReportLink"
+									v-model="anstoReportLink"
 								/>
 							</div>
 
@@ -202,7 +202,7 @@ export default {
 	data() {
 		return {
 			productType: '',
-			anstoDocument: '',
+			anstoReportLink: '',
 			batchDescription: '',
 			receivedDate: '',
 			receivedWeight: '',
@@ -241,6 +241,7 @@ export default {
 						batchDescription: this.batchDescription,
 						aggregateType: 'NEW_AGG',
 						harvests: this.batchObj,
+						anstoReportLink: this.anstoReportLink,
 					},
 				}
 			)
