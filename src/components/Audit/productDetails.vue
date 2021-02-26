@@ -9,15 +9,18 @@
 				<table class="data-table">
 					<tbody class="harvest-table">
 						<tr class="harvest-table-row">
+							<td class="item">Link to ANSTO Testing Report</td>
 							<td class="item">
-								{{ /*TBC where this info is from */}}
-							</td>
-							<td class="item">
-								placeholder
-								{{ /*TBC where this info is from */}}
-							</td>
-							<td class="item">
-								<button class="primary-button">ANTSO Report</button>
+								<a
+									class="primary-button"
+									:href="
+										productDetails.anstoReportLink
+											? productDetails.anstoReportLink
+											: '#'
+									"
+								>
+									ANTSO Report Link
+								</a>
 							</td>
 						</tr>
 					</tbody>
@@ -180,6 +183,10 @@ export default {
 		:first-of-type {
 			font-weight: bold;
 		}
+	}
+	.primary-button {
+		text-align: center;
+		text-decoration: none;
 	}
 }
 </style>

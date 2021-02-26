@@ -690,6 +690,9 @@ export default {
 		display: flex;
 		justify-content: space-around;
 		text-align: center;
+		.item {
+			min-width: 33%;
+		}
 		.title {
 			color: rgb(208, 217, 71);
 			margin-top: 0;
@@ -704,6 +707,9 @@ export default {
 			flex-direction: column;
 			.cert-img {
 				width: 50%;
+			}
+			.item {
+				min-width: 100%;
 			}
 		}
 	}
