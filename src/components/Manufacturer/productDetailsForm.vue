@@ -147,7 +147,9 @@
 											class="harvest-table-row"
 										>
 											<td class="harvest-item">{{ batch.identifier }}</td>
-											<td class="harvest-item">???</td>
+											<td class="harvest-item">
+												{{ getDateOfAggresstion }}
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -223,7 +225,23 @@ export default {
 					batches.set(bn, batches.has(bn) ? [...batches.get(bn), b] : [b]);
 				}
 			}
+			console.log(batches);
 			return batches;
+		},
+		getDateOfAggresstion: function () {
+			const events = this.product.batches.map((event) => event.events).flat();
+			let batchUpdateEvent = [];
+			if (events.length > 0) {
+				batchUpdateEvent = events.filter((type) => {
+					if (type.eventType === 'BATCH_UPDATE_EVENT') {
+						return type;
+					}
+				});
+				return batchUpdateEvent.length > 0
+					? batchUpdateEvent[0].eventPayload.batchUpdateDate
+					: '-';
+			}
+			return '-';
 		},
 	},
 	data() {
@@ -286,6 +304,7 @@ export default {
 					console.log('error');
 				});
 		},
+
 		addNonAbgHarvest() {
 			this.showNonAboriginalSection = true;
 		},

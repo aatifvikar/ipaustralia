@@ -374,7 +374,9 @@ export default {
 						return type;
 					}
 				});
-				return batchUpdateEvent[0].eventPayload.batchUpdateDate;
+				return batchUpdateEvent.length > 0
+					? batchUpdateEvent[0].eventPayload.batchUpdateDate
+					: '-';
 			}
 			return null;
 		},
