@@ -28,6 +28,18 @@
 									v-model="batchDescription"
 								/>
 							</div>
+							<div class="form-field">
+								<label class="title" for="anstoDocument">
+									ANSTO Testing Document URL
+								</label>
+								<input
+									type="text"
+									id="anstoDocument"
+									name="anstoDocument"
+									v-model="anstoDocument"
+								/>
+							</div>
+
 							<hr />
 							<div v-for="item in selectedHarvestIds" :key="item.harvestId">
 								<h3>Harvest {{ item.identifier }}</h3>
@@ -190,6 +202,7 @@ export default {
 	data() {
 		return {
 			productType: '',
+			anstoDocument: '',
 			batchDescription: '',
 			receivedDate: '',
 			receivedWeight: '',
