@@ -50,8 +50,15 @@
 									v-model="productDescription"
 								/>
 							</div>
-							<div class="button-container">
-								<button class="primary-button">Upload Product Image</button>
+							<div class="form-field">
+								<label class="title" for="productImage">Product Image</label>
+								<p class="hint"></p>
+								<input
+									type="text"
+									id="productImage"
+									name="productImage"
+									v-model="productImage"
+								/>
 							</div>
 							<div class="form-field">
 								<label class="title" for="productLink">Product Link</label>
@@ -250,6 +257,7 @@ export default {
 			productNumber: store.productNumber,
 			productType: '',
 			productLink: '',
+			productImage: '',
 			noOfUnits: '',
 			mfgDate: '',
 			batchWeight: 0.0,

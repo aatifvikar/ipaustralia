@@ -89,13 +89,13 @@
 				</div>
 				<div
 					v-if="
-						productDetails.indigenousSourced ||
+						!productDetails.indigenousSourced ||
 						productDetails.anstoIndicator ||
 						productDetails.accessBenefitSharing
 					"
 					class="certification-section"
 				>
-					<div v-if="productDetails.indigenousSourced" class="item">
+					<div v-if="!productDetails.indigenousSourced" class="item">
 						<img
 							class="cert-img"
 							:src="require('@/assets/kakadu_1.png')"
@@ -106,7 +106,7 @@
 							The Northern Australia Aboriginal Kakadu Plum Alliance
 						</dd>
 					</div>
-					<div v-if="productDetails.anstoIndicator" class="item">
+					<div v-if="!productDetails.anstoIndicator" class="item">
 						<img
 							class="cert-img"
 							:src="require('@/assets/kakadu_2.png')"
@@ -118,7 +118,7 @@
 							chain
 						</dd>
 					</div>
-					<div v-if="productDetails.accessBenefitSharing" class="item">
+					<div v-if="!productDetails.accessBenefitSharing" class="item">
 						<img
 							class="cert-img"
 							:src="require('@/assets/kakadu_3.png')"
