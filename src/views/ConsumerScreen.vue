@@ -35,18 +35,17 @@
 					</div>
 					<div class="item description-container">
 						<dl>
-							<div class="description-item">
-								<dt class="title">Product Name</dt>
-								<dd>
+							<div class="description-item" v-if="productDetails.productName">
+								<h3>
+									{{ productDetails.productName }}
+								</h3>
+								<dt class="title productType">
 									{{
-										productDetails.productName
-											? productDetails.productName
+										productDetails.productType
+											? productDetails.productType
 											: '-'
 									}}
-								</dd>
-							</div>
-							<div class="description-item">
-								<dt class="title">Product Description</dt>
+								</dt>
 								<dd>
 									{{
 										productDetails.productDescription
@@ -54,19 +53,6 @@
 											: '-'
 									}}
 								</dd>
-							</div>
-							<div class="description-item">
-								<dt class="title">Product Type</dt>
-								<dd>
-									{{
-										productDetails.productType
-											? productDetails.productType
-											: '-'
-									}}
-								</dd>
-							</div>
-							<div class="description-item">
-								<dt class="title">Verified by</dt>
 								<dd>
 									<a
 										:href="
@@ -76,12 +62,18 @@
 										"
 										target="_blank"
 									>
-										<img
-											:src="require('@/assets/ip-aus-logo.png')"
-											alt="Plum Lotion"
-											class="logo-img"
-										/>
+										View more details...
 									</a>
+								</dd>
+							</div>
+							<div class="description-item">
+								<dt class="title productType">Verified by</dt>
+								<dd>
+									<img
+										:src="require('@/assets/ip-aus-logo.png')"
+										alt="IP Australia"
+										class="productImage"
+									/>
 								</dd>
 							</div>
 						</dl>
@@ -411,27 +403,29 @@ export default {
 	methods: {
 		async getProductDetails() {
 			this.message = 'Searching records......';
-			await axios(
-				`${process.env.VUE_APP_ENDPOINT}/manufacturers/products/` +
-					`${this.productId}`,
-				{
-					method: 'GET',
-					headers: {
-						'content-type': 'application/json',
-					},
-					auth: {
-						username: store.username,
-						password: store.password,
-					},
-				}
-			)
-				.then((response) => {
-					this.productDetails = response.data;
-				})
-				.catch(() => {
-					console.log('error');
-					this.message = 'No records found try again';
-				});
+			if (this.productId) {
+				await axios(
+					`${process.env.VUE_APP_ENDPOINT}/manufacturers/products/` +
+						`${this.productId}`,
+					{
+						method: 'GET',
+						headers: {
+							'content-type': 'application/json',
+						},
+						auth: {
+							username: store.username,
+							password: store.password,
+						},
+					}
+				)
+					.then((response) => {
+						this.productDetails = response.data;
+					})
+					.catch(() => {
+						console.log('error');
+						this.message = 'No records found try again';
+					});
+			}
 		},
 		getImage(img) {
 			if (!img) return;
@@ -588,6 +582,10 @@ export default {
 			width: 90%;
 			height: 5rem;
 		}
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
 		@media (max-width: 768px) {
 			padding: 2rem;
 		}
@@ -652,10 +650,19 @@ export default {
 			font-weight: 400;
 		}
 	}
+	.productType {
+		color: rgb(208, 217, 71);
+	}
 	.description-item {
 		dd {
 			margin: 0;
-			max-width: 30rem;
+			a {
+				float: right;
+			}
+			.productImage {
+				width: 100%;
+				height: 6rem;
+			}
 		}
 	}
 	.sub-heading,

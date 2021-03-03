@@ -51,13 +51,15 @@
 								/>
 							</div>
 							<div class="form-field">
-								<label class="title" for="productImage">Product Image</label>
+								<label class="title" for="productImageLink">
+									Product Image
+								</label>
 								<p class="hint"></p>
 								<input
 									type="text"
-									id="productImage"
-									name="productImage"
-									v-model="productImage"
+									id="productImageLink"
+									name="productImageLink"
+									v-model="productImageLink"
 								/>
 							</div>
 							<div class="form-field">
@@ -257,7 +259,7 @@ export default {
 			productNumber: store.productNumber,
 			productType: '',
 			productLink: '',
-			productImage: '',
+			productImageLink: '',
 			noOfUnits: '',
 			mfgDate: '',
 			batchWeight: 0.0,
@@ -298,6 +300,7 @@ export default {
 						productLink: this.productLink,
 						productDescription: this.productDescription,
 						productType: this.productType,
+						productImageLink: this.productImageLink,
 						additionalUnitsProduced: parseInt(this.noOfUnits),
 						batches: this.updateObject,
 					},
