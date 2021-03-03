@@ -19,6 +19,9 @@
 				</div>
 			</div>
 			<div v-else-if="productDetails">
+				<div class="floating-logo">
+					<img :src="require('@/assets/ip-aus-logo.png')" alt="IP Australia" />
+				</div>
 				<div class="main-section">
 					<div class="item">
 						<div class="image-container">
@@ -66,18 +69,18 @@
 									</a>
 								</dd>
 							</div>
-							<div class="description-item">
-								<dt class="title productType">Verified by</dt>
-								<dd>
-									<img
-										:src="require('@/assets/ip-aus-logo.png')"
-										alt="IP Australia"
-										class="productImage"
-									/>
-								</dd>
-							</div>
 						</dl>
 					</div>
+				</div>
+				<div
+					class="naakpa-header-section"
+					v-if="
+						productDetails.indigenousSourced ||
+						productDetails.anstoIndicator ||
+						productDetails.accessBenefitSharing
+					"
+				>
+					<h3>NAAKPA Certifications</h3>
 				</div>
 				<div
 					v-if="
@@ -496,7 +499,7 @@ export default {
 <style lang="scss" scoped>
 @mixin flexDisplay {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: space-between;
 	.item {
 		max-width: 50%;
@@ -590,6 +593,13 @@ export default {
 			padding: 2rem;
 		}
 	}
+	.naakpa-header-section {
+		padding: 4rem 8rem 0 8rem;
+		background: #000;
+		h3 {
+			margin: 0;
+		}
+	}
 	.main-section {
 		background: rgb(24, 24, 24);
 		@media (min-width: 768px) {
@@ -624,6 +634,7 @@ export default {
 		background-color: rgb(208, 217, 71);
 		color: black;
 		padding: 3rem;
+		padding-bottom: 8rem;
 		.support-description {
 			margin-bottom: 2rem;
 			padding-left: 18rem;
@@ -651,6 +662,7 @@ export default {
 		}
 	}
 	.productType {
+		width: 100%;
 		color: rgb(208, 217, 71);
 	}
 	.description-item {
@@ -659,11 +671,21 @@ export default {
 			a {
 				float: right;
 			}
-			.productImage {
-				width: 100%;
-				height: 6rem;
-			}
 		}
+	}
+	.floating-logo {
+		text-align: end;
+		position: fixed;
+		bottom: 20px;
+		right: 50px;
+		img {
+			border-radius: 10px;
+			height: 5rem;
+			box-shadow: 0 0 3px rgb(208, 217, 71);
+		}
+	}
+	.description-container {
+		min-width: 50%;
 	}
 	.sub-heading,
 	.manifacture {
